@@ -1,6 +1,6 @@
 import type { Incident, MonitorResponse } from '../types/monitor'
 
-const apiUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
+const apiUrl = import.meta.env.VITE_API_URL ?? 'https://noc-elecciones-backend.onrender.com'
 
 export async function fetchMonitorStatus(): Promise<MonitorResponse> {
   const response = await fetch(`${apiUrl}/api/monitor/status`)
