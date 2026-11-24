@@ -24,14 +24,28 @@ app.get("/api/monitor/status", async (_req, res) => {
 });
 
 app.get("/api/incidents", async (req, res) => {
-  const openOnly = req.query.open === "true";
-  const incidents = await getRecentIncidents(openOnly);
-  res.json({ total: incidents.length, incidents });
+  try {
+    const openOnly = req.query.open === "true";
+    const incidents = await getRecentIncidents(openOnly);
+    res.json({ total: incidents.length, incidents });
+  } catch (error) {
+    console.error("[api] Error consultando incidentes:", error);
+    res.status(503).json({
+      error: "La base de datos del monitor no está disponible",
+    });
+  }
 });
 
 app.get("/api/services/:serviceId/history", async (req, res) => {
-  const history = await getServiceHistory(req.params.serviceId);
-  res.json({ serviceId: req.params.serviceId, total: history.length, history });
+  try {
+    const history = await getServiceHistory(req.params.serviceId);
+    res.json({ serviceId: req.params.serviceId, total: history.length, history });
+  } catch (error) {
+    console.error("[api] Error consultando historial:", error);
+    res.status(503).json({
+      error: "La base de datos del monitor no está disponible",
+    });
+  }
 });
 
 app.listen(port, () => {
